@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whiskers & Coffee - Where Purrs Meet Perfect Brews</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .float {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #f59e0b, #d97706, #92400e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+        
+        .pulse-slow {
+            animation: pulse 3s infinite;
+        }
+        
+        .slide-in-left {
+            animation: slideInLeft 0.6s ease-out;
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 0.6s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .glow {
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+        }
+        
+        .glow:hover {
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.5);
+        }
+        
+        .parallax-bg {
+            background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fecaca 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .modal {
+            display: none;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+
+        .memory-card {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 24px;
+        }
+
+        .memory-card:hover {
+            transform: scale(1.05);
+        }
+
+        .memory-card.flipped {
+            background: white;
+            border: 2px solid #06b6d4;
+        }
+
+        .memory-card.matched {
+            background: linear-gradient(135deg, #10b981, #059669);
+            cursor: default;
+        }
+
+        .sparkle {
+            animation: sparkle 0.6s ease-in-out;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar" class="bg-white/90 backdrop-blur-md border-amber-100 shadow-lg sticky top-0 z-50 border-b transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-4 cursor-pointer" onclick="showSection('home')">
+                    <!-- Aesthetic Logo -->
+                    <div class="relative">
+                        <svg width="60" height="60" viewBox="0 0 60 60" class="float">
+                            <!-- Coffee cup base -->
+                            <path d="M15 25 L15 45 Q15 50 20 50 L35 50 Q40 50 40 45 L40 25 Z" fill="#8B4513" stroke="#654321" stroke-width="1"/>
+                            <!-- Coffee liquid -->
+                            <ellipse cx="27.5" cy="27" rx="11" ry="3" fill="#4A2C2A"/>
+                            <!-- Coffee cup handle -->
+                            <path d="M40 30 Q47 30 47 37 Q47 42 42 42 L40 42" fill="none" stroke="#8B4513" stroke-width="3" stroke-linecap="round"/>
+                            <!-- Steam lines -->
+                            <path d="M22 20 Q24 15 22 10" fill="none" stroke="#E5E7EB" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+                            <path d="M27 18 Q29 13 27 8" fill="none" stroke="#E5E7EB" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+                            <path d="M32 20 Q34 15 32 10" fill="none" stroke="#E5E7EB" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+                            <!-- Cat silhouette integrated -->
+                            <circle cx="45" cy="15" r="8" fill="#F59E0B" opacity="0.9"/>
+                            <!-- Cat ears -->
+                            <path d="M40 10 L42 5 L45 8 Z" fill="#F59E0B" opacity="0.9"/>
+                            <path d="M48 8 L51 5 L53 10 Z" fill="#F59E0B" opacity="0.9"/>
+                            <!-- Cat face details -->
+                            <circle cx="42" cy="14" r="1" fill="#1F2937"/>
+                            <circle cx="48" cy="14" r="1" fill="#1F2937"/>
+                            <path d="M45 16 L43 18 M45 16 L47 18" stroke="#1F2937" stroke-width="1" stroke-linecap="round"/>
+                        </svg>
+                        <!-- Decorative elements -->
+                        <div class="absolute -top-1 -right-1 text-yellow-400 text-xs animate-pulse">✨</div>
+                        <div class="absolute -bottom-1 -left-1 text-amber-400 text-xs animate-bounce" style="animation-delay: 0.5s">🐾</div>
+                    </div>
+                    <div>
+                        <span id="logo-title" class="text-2xl font-bold bg-gradient-to-r from-amber-600 via-orange-500 to-amber-700 bg-clip-text text-transparent transition-all duration-700">Whiskers & Coffee</span>
+                        <p id="logo-tagline" class="text-xs text-amber-600 font-medium transition-all duration-700">Where Purrs Meet Perfect Brews</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-1">
+                    <button onclick="showSection('home')" class="nav-btn px-4 py-3 rounded-full text-sm font-medium transition-all duration-300 bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow-lg glow">
+                        Home
+                    </button>
+                    <button onclick="showSection('cats')" class="nav-btn px-4 py-3 rounded-full text-sm font-medium transition-all duration-300 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
+                        Cats
+                    </button>
+                    <button onclick="showSection('menu')" class="nav-btn px-4 py-3 rounded-full text-sm font-medium transition-all duration-300 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
+                        Menu
+                    </button>
+                    <button onclick="showSection('gallery')" class="nav-btn px-4 py-3 rounded-full text-sm font-medium transition-all duration-300 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
+                        Gallery
+                    </button>
+                    <button onclick="showSection('games')" class="nav-btn px-4 py-3 rounded-full text-sm font-medium transition-all duration-300 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
+                        Games
+                    </button>
+                    <button onclick="showSection('booking')" class="nav-btn px-4 py-3 rounded-full text-sm font-medium transition-all duration-300 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
+                        Book
+                    </button>
+                    <button onclick="showSection('visit')" class="nav-btn px-4 py-3 rounded-full text-sm font-medium transition-all duration-300 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
+                        Visit
+                    </button>
+                    <button onclick="showSection('contact')" class="nav-btn px-4 py-3 rounded-full text-sm font-medium transition-all duration-300 text-amber-700 hover:bg-amber-50 hover:text-amber-800">
+                        Contact
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="section active">
+        <div class="parallax-bg min-h-screen">
+            <!-- Hero Section -->
+            <div class="relative overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+                    <div class="text-center fade-in">
+                        <div class="flex justify-center mb-8">
+                            <div class="text-8xl bounce">☕</div>
+                            <div class="text-8xl float mx-4">🐱</div>
+                            <div class="text-8xl bounce" style="animation-delay: 0.5s">❤️</div>
+                        </div>
+                        <h1 class="text-6xl md:text-7xl font-bold gradient-text mb-6">
+                            Welcome to Whiskers & Coffee
+                        </h1>
+                        <p class="text-xl text-amber-800 mb-8 max-w-3xl mx-auto leading-relaxed">
+                            Where purrs meet perfect brews. Enjoy premium coffee while spending time with our adorable rescue cats looking for their forever homes. Every sip supports a great cause!
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                            <button onclick="showSection('booking')" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl glow">
+                                Book Your Visit ✨
+                            </button>
+                            <button onclick="showSection('cats')" class="bg-white/80 backdrop-blur-sm hover:bg-white text-amber-700 border-2 border-amber-500 px-10 py-4 rounded-full font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-xl">
+                                Meet Our Cats 🐾
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="py-16 bg-white/80 backdrop-blur-sm">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid md:grid-cols-4 gap-8 text-center">
+                        <div class="slide-in-left">
+                            <div class="text-4xl font-bold text-amber-600 mb-2">150+</div>
+                            <p class="text-amber-800">Cats Adopted</p>
+                        </div>
+                        <div class="slide-in-left" style="animation-delay: 0.2s">
+                            <div class="text-4xl font-bold text-amber-600 mb-2">5★</div>
+                            <p class="text-amber-800">Average Rating</p>
+                        </div>
+                        <div class="slide-in-right" style="animation-delay: 0.4s">
+                            <div class="text-4xl font-bold text-amber-600 mb-2">3</div>
+                            <p class="text-amber-800">Years Open</p>
+                        </div>
+                        <div class="slide-in-right" style="animation-delay: 0.6s">
+                            <div class="text-4xl font-bold text-amber-600 mb-2">12</div>
+                            <p class="text-amber-800">Cats Available</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="py-20 bg-gradient-to-br from-white to-amber-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 class="text-4xl font-bold text-center text-amber-900 mb-16">Why Choose Whiskers & Coffee?</h2>
+                    <div class="grid md:grid-cols-3 gap-12">
+                        <div class="text-center p-8 card-hover bg-white rounded-2xl shadow-lg">
+                            <div class="text-6xl mb-6 float">☕</div>
+                            <h3 class="text-2xl font-semibold text-amber-800 mb-4">Premium Coffee</h3>
+                            <p class="text-amber-600 leading-relaxed">Freshly roasted beans and expertly crafted beverages made by our skilled baristas. Every cup is a work of art.</p>
+                        </div>
+                        <div class="text-center p-8 card-hover bg-white rounded-2xl shadow-lg">
+                            <div class="text-6xl mb-6 bounce">🐾</div>
+                            <h3 class="text-2xl font-semibold text-amber-800 mb-4">Adoptable Cats</h3>
+                            <p class="text-amber-600 leading-relaxed">All our cats are rescue animals looking for loving homes. Meet your new best friend while enjoying your coffee.</p>
+                        </div>
+                        <div class="text-center p-8 card-hover bg-white rounded-2xl shadow-lg">
+                            <div class="text-6xl mb-6 pulse-slow">🏠</div>
+                            <h3 class="text-2xl font-semibold text-amber-800 mb-4">Cozy Atmosphere</h3>
+                            <p class="text-amber-600 leading-relaxed">Relax in our comfortable, cat-friendly environment designed for both humans and felines to feel at home.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonials -->
+            <div class="py-20 bg-amber-100">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 class="text-4xl font-bold text-amber-900 mb-12">What Our Visitors Say</h2>
+                    <div id="testimonial" class="bg-white rounded-2xl p-8 shadow-xl fade-in">
+                        <div class="text-yellow-400 text-2xl mb-4">★★★★★</div>
+                        <p class="text-lg text-gray-700 mb-4 italic">"The most relaxing place in the city! I adopted my cat Mittens here and still come back for the amazing coffee."</p>
+                        <p class="font-semibold text-amber-800">- Sarah M.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cats Section -->
+    <section id="cats" class="section">
+        <div class="bg-gradient-to-br from-purple-50 to-pink-100 min-h-screen py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-5xl font-bold text-purple-900 mb-6">Meet Our Adorable Cats</h2>
+                    <p class="text-xl text-purple-700 max-w-3xl mx-auto">Each of our cats has a unique personality and is looking for their perfect match! Click on any cat to learn more about their story.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="cats-grid">
+                    <!-- Cat cards will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="section">
+        <div class="bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-5xl font-bold text-green-900 mb-6">Our Delicious Menu</h2>
+                    <p class="text-xl text-green-700 max-w-3xl mx-auto">Freshly prepared drinks and treats to enjoy with your feline friends. All ingredients are cat-safe!</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8 mb-12" id="menu-grid">
+                    <!-- Menu items will be generated by JavaScript -->
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-2xl shadow-xl p-8 text-center card-hover">
+                        <div class="text-4xl mb-4">🌱</div>
+                        <h3 class="text-xl font-bold text-green-800 mb-3">Dietary Options</h3>
+                        <p class="text-gray-600">We offer dairy-free milk alternatives, gluten-free pastries, and vegan options upon request.</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-xl p-8 text-center card-hover">
+                        <div class="text-4xl mb-4">🐾</div>
+                        <h3 class="text-xl font-bold text-green-800 mb-3">Cat-Safe Environment</h3>
+                        <p class="text-gray-600">All our food and drinks are prepared in a cat-safe environment with no harmful ingredients to our feline friends.</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-xl p-8 text-center card-hover">
+                        <div class="text-4xl mb-4">☕</div>
+                        <h3 class="text-xl font-bold text-green-800 mb-3">Fresh Daily</h3>
+                        <p class="text-gray-600">Everything is made fresh daily using locally sourced ingredients and premium coffee beans.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="section">
+        <div class="bg-gradient-to-br from-yellow-50 to-amber-100 min-h-screen py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-5xl font-bold text-yellow-900 mb-6">Photo Gallery</h2>
+                    <p class="text-xl text-yellow-700 max-w-3xl mx-auto">Adorable moments captured at our cafe! Click on any photo to see it larger.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6" id="gallery-grid">
+                    <!-- Gallery items will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Games Section -->
+    <section id="games" class="section">
+        <div class="bg-gradient-to-br from-cyan-50 to-blue-100 min-h-screen py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-5xl font-bold text-cyan-900 mb-6">Cat Games & Fun</h2>
+                    <p class="text-xl text-cyan-700 max-w-3xl mx-auto">Play some fun games while you wait for your table or just for entertainment!</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Cat Memory Game -->
+                    <div class="bg-white rounded-2xl shadow-xl p-8 card-hover">
+                        <h3 class="text-3xl font-bold text-cyan-800 mb-6 text-center">🧠 Cat Memory Game</h3>
+                        <div class="text-center mb-6">
+                            <p class="text-gray-600 mb-4">Match the cat pairs! Score: <span id="memory-score" class="font-bold text-cyan-600">0</span></p>
+                            <button onclick="startMemoryGame()" class="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all">
+                                New Game 🎮
+                            </button>
+                        </div>
+                        <div id="memory-game" class="grid grid-cols-4 gap-3 max-w-md mx-auto">
+                            <!-- Memory game cards will be generated -->
+                        </div>
+                    </div>
+
+                    <!-- Cat Clicker Game -->
+                    <div class="bg-white rounded-2xl shadow-xl p-8 card-hover">
+                        <h3 class="text-3xl font-bold text-cyan-800 mb-6 text-center">🐾 Cat Clicker</h3>
+                        <div class="text-center">
+                            <p class="text-gray-600 mb-4">Click the cat to earn treats! Treats: <span id="clicker-score" class="font-bold text-cyan-600">0</span></p>
+                            <div class="mb-6">
+                                <button id="clicker-cat" onclick="clickCat()" class="text-8xl hover:scale-110 transition-transform duration-200 cursor-pointer bg-gradient-to-br from-orange-200 to-yellow-200 rounded-full p-4 shadow-lg hover:shadow-xl">
+                                    🐱
+                                </button>
+                            </div>
+                            <div class="space-y-2">
+                                <button onclick="buyUpgrade('autoClicker')" id="auto-clicker-btn" class="block w-full bg-yellow-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                    Auto Clicker (Cost: <span id="auto-cost">50</span> treats)
+                                </button>
+                                <button onclick="buyUpgrade('multiplier')" id="multiplier-btn" class="block w-full bg-purple-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                    2x Multiplier (Cost: <span id="multiplier-cost">100</span> treats)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cat Facts -->
+                <div class="mt-12 bg-white rounded-2xl shadow-xl p-8 text-center card-hover">
+                    <h3 class="text-3xl font-bold text-cyan-800 mb-6">🤓 Random Cat Fact</h3>
+                    <div id="cat-fact" class="text-lg text-gray-700 mb-6 italic">
+                        Click the button to learn something amazing about cats!
+                    </div>
+                    <button onclick="showRandomFact()" class="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all transform hover:scale-105">
+                        New Cat Fact! 🎲
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="booking" class="section">
+        <div class="bg-gradient-to-br from-teal-50 to-green-100 min-h-screen py-16">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-5xl font-bold text-teal-900 mb-6">Book Your Visit</h2>
+                    <p class="text-xl text-teal-700 max-w-3xl mx-auto">Reserve your table for the perfect cat cafe experience! Choose your date, time, and let us know your preferences.</p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                    <div class="bg-gradient-to-r from-teal-500 to-green-500 p-8 text-white text-center">
+                        <h3 class="text-3xl font-bold mb-4">Make a Reservation</h3>
+                        <p class="text-lg opacity-90">Secure your spot for an unforgettable experience with our cats!</p>
+                    </div>
+                    
+                    <form class="p-8 space-y-6" onsubmit="handleBookingSubmit(event)">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Full Name *</label>
+                                <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors" placeholder="Your full name" required />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Email Address *</label>
+                                <input type="email" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors" placeholder="your@email.com" required />
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Phone Number *</label>
+                                <input type="tel" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors" placeholder="(555) 123-4567" required />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Number of Guests *</label>
+                                <select class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors" required>
+                                    <option value="">Select guests</option>
+                                    <option value="1">1 Guest</option>
+                                    <option value="2">2 Guests</option>
+                                    <option value="3">3 Guests</option>
+                                    <option value="4">4 Guests</option>
+                                    <option value="5">5 Guests</option>
+                                    <option value="6+">6+ Guests (Call for availability)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Preferred Date *</label>
+                                <input type="date" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors" required />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Preferred Time *</label>
+                                <select class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors" required>
+                                    <option value="">Select time</option>
+                                    <option value="9:00 AM">9:00 AM</option>
+                                    <option value="10:00 AM">10:00 AM</option>
+                                    <option value="11:00 AM">11:00 AM</option>
+                                    <option value="12:00 PM">12:00 PM</option>
+                                    <option value="1:00 PM">1:00 PM</option>
+                                    <option value="2:00 PM">2:00 PM</option>
+                                    <option value="3:00 PM">3:00 PM</option>
+                                    <option value="4:00 PM">4:00 PM</option>
+                                    <option value="5:00 PM">5:00 PM</option>
+                                    <option value="6:00 PM">6:00 PM</option>
+                                    <option value="7:00 PM">7:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">Special Requests or Allergies</label>
+                            <textarea rows="4" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors resize-none" placeholder="Any special requests, dietary restrictions, or allergies we should know about?"></textarea>
+                        </div>
+                        
+                        <div class="bg-teal-50 border border-teal-200 rounded-xl p-6">
+                            <h4 class="font-bold text-teal-800 mb-3">Booking Summary</h4>
+                            <div class="space-y-2 text-sm text-teal-700">
+                                <p>• Entry fee: $12 per adult, $8 per child (under 12)</p>
+                                <p>• Includes 90 minutes with our cats</p>
+                                <p>• Food and drinks purchased separately</p>
+                                <p>• Free cancellation up to 24 hours before</p>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-600 hover:to-green-600 text-white py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            Reserve My Table 🎉
+                        </button>
+                    </form>
+                    
+                    <div class="px-8 pb-8">
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visit Section -->
+    <section id="visit" class="section">
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-5xl font-bold text-blue-900 mb-6">Plan Your Visit</h2>
+                    <p class="text-xl text-blue-700 max-w-3xl mx-auto">Everything you need to know for the perfect cat cafe experience. We can't wait to welcome you!</p>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-12 mb-12">
+                    <div class="bg-white rounded-2xl shadow-xl p-8 card-hover slide-in-left">
+                        <h3 class="text-3xl font-bold text-blue-800 mb-8 flex items-center">
+                            <span class="mr-3">📍</span>
+                            Location & Hours
+                        </h3>
+                        <div class="space-y-6">
+                            <div class="p-4 bg-blue-50 rounded-xl">
+                                <h4 class="font-bold text-blue-700 mb-2 flex items-center">
+                                    <span class="mr-2">🏠</span>
+                                    Address
+                                </h4>
+                                <p class="text-gray-700">123 Cozy Street, Cat City, CC 12345</p>
+                                <p class="text-sm text-blue-600 mt-1">Free parking available behind the building</p>
+                            </div>
+                            <div class="p-4 bg-blue-50 rounded-xl">
+                                <h4 class="font-bold text-blue-700 mb-3 flex items-center">
+                                    <span class="mr-2">🕒</span>
+                                    Hours
+                                </h4>
+                                <div class="grid grid-cols-2 gap-2 text-sm">
+                                    <div class="font-medium">Monday - Friday:</div>
+                                    <div>7:00 AM - 8:00 PM</div>
+                                    <div class="font-medium">Saturday - Sunday:</div>
+                                    <div>8:00 AM - 9:00 PM</div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-blue-50 rounded-xl">
+                                <h4 class="font-bold text-blue-700 mb-2 flex items-center">
+                                    <span class="mr-2">📞</span>
+                                    Contact
+                                </h4>
+                                <p class="text-gray-700">Phone: (555) 123-CATS</p>
+                                <p class="text-gray-700">Email: hello@whiskersandcoffee.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-xl p-8 card-hover slide-in-right">
+                        <h3 class="text-3xl font-bold text-blue-800 mb-8 flex items-center">
+                            <span class="mr-3">📋</span>
+                            Visit Guidelines
+                        </h3>
+                        <div class="space-y-6">
+                            <div class="p-4 bg-green-50 rounded-xl border-l-4 border-green-400">
+                                <h4 class="font-bold text-green-700 mb-2">🎫 Reservations</h4>
+                                <p class="text-gray-700 text-sm">Highly recommended for weekends and evenings. Walk-ins welcome based on availability.</p>
+                            </div>
+                            <div class="p-4 bg-yellow-50 rounded-xl border-l-4 border-yellow-400">
+                                <h4 class="font-bold text-yellow-700 mb-2">🧼 Health & Safety</h4>
+                                <p class="text-gray-700 text-sm">Hand sanitizer provided at entrance. Please wash hands before and after interacting with cats.</p>
+                            </div>
+                            <div class="p-4 bg-purple-50 rounded-xl border-l-4 border-purple-400">
+                                <h4 class="font-bold text-purple-700 mb-2">🐱 Cat Interaction</h4>
+                                <p class="text-gray-700 text-sm">Let cats approach you first. No picking up cats unless supervised by staff. Respect their space!</p>
+                            </div>
+                            <div class="p-4 bg-blue-50 rounded-xl border-l-4 border-blue-400">
+                                <h4 class="font-bold text-blue-700 mb-2">💰 Pricing</h4>
+                                <p class="text-gray-700 text-sm">$12 entry fee (includes 90 minutes with cats) + food/drink purchases. Children under 12: $8</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl shadow-2xl p-12 text-center text-white fade-in">
+                    <h3 class="text-4xl font-bold mb-6">Ready for Your Cat Cafe Adventure? 🐾</h3>
+                    <p class="text-xl mb-8 opacity-90">Book your table now for the ultimate relaxing experience with our adorable cats!</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="showSection('booking')" class="bg-white text-blue-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            Make a Reservation 📅
+                        </button>
+                        <button onclick="showSection('contact')" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:scale-105">
+                            Ask Questions 💬
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="bg-gradient-to-br from-rose-50 to-pink-100 min-h-screen py-16">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 fade-in">
+                    <h2 class="text-5xl font-bold text-rose-900 mb-6">Get in Touch</h2>
+                    <p class="text-xl text-rose-700 max-w-3xl mx-auto">Questions about adoption, reservations, or just want to say hello? We'd love to hear from you!</p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                    <div class="grid lg:grid-cols-2">
+                        <div class="p-12 bg-gradient-to-br from-rose-500 to-pink-600 text-white">
+                            <h3 class="text-3xl font-bold mb-8">Contact Information</h3>
+                            <div class="space-y-8">
+                                <div class="flex items-start space-x-4">
+                                    <div class="text-3xl">📍</div>
+                                    <div>
+                                        <p class="font-bold text-lg mb-1">Visit Us</p>
+                                        <p class="opacity-90">123 Cozy Street</p>
+                                        <p class="opacity-90">Cat City, CC 12345</p>
+                                        <p class="text-sm opacity-75 mt-2">Free parking available</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-4">
+                                    <div class="text-3xl">📞</div>
+                                    <div>
+                                        <p class="font-bold text-lg mb-1">Call Us</p>
+                                        <p class="opacity-90">(555) 123-CATS</p>
+                                        <p class="text-sm opacity-75 mt-1">Available during business hours</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-4">
+                                    <div class="text-3xl">✉️</div>
+                                    <div>
+                                        <p class="font-bold text-lg mb-1">Email Us</p>
+                                        <p class="opacity-90">hello@purrfectbrew.com</p>
+                                        <p class="text-sm opacity-75 mt-1">We respond within 24 hours</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start space-x-4">
+                                    <div class="text-3xl">📱</div>
+                                    <div>
+                                        <p class="font-bold text-lg mb-1">Follow Us</p>
+                                        <p class="opacity-90">@WhiskersAndCoffee</p>
+                                        <p class="text-sm opacity-75 mt-1">Daily cat photos & updates!</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-12">
+                            <h3 class="text-3xl font-bold text-rose-800 mb-8">Send us a Message</h3>
+                            <form class="space-y-6" onsubmit="handleFormSubmit(event)">
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-700 mb-2">First Name *</label>
+                                        <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-colors" placeholder="Your first name" required />
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-700 mb-2">Last Name *</label>
+                                        <input type="text" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-colors" placeholder="Your last name" required />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Email Address *</label>
+                                    <input type="email" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-colors" placeholder="your@email.com" required />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Phone Number</label>
+                                    <input type="tel" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-colors" placeholder="(555) 123-4567" />
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Subject *</label>
+                                    <select class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-colors" required>
+                                        <option>General Inquiry</option>
+                                        <option>Cat Adoption Interest</option>
+                                        <option>Table Reservation</option>
+                                        <option>Private Event Booking</option>
+                                        <option>Volunteer Opportunities</option>
+                                        <option>Media & Press</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-2">Message *</label>
+                                    <textarea rows="5" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-rose-500 focus:border-rose-500 transition-colors resize-none" placeholder="Tell us how we can help you..." required></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                    Send Message 💌
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-gradient-to-r from-amber-800 to-orange-800 text-white py-16 transition-all duration-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div class="col-span-2 md:col-span-1">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="text-3xl">🐱</div>
+                        <div>
+                            <h3 class="text-2xl font-bold">Whiskers & Coffee</h3>
+                            <p class="text-sm opacity-80">Where Purrs Meet Perfect Brews</p>
+                        </div>
+                    </div>
+                    <p class="text-sm opacity-90 leading-relaxed mb-4">
+                        Your neighborhood cat cafe where exceptional coffee meets adorable rescue cats. Every visit supports finding loving homes for our feline friends.
+                    </p>
+                    <div class="flex space-x-4">
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors cursor-pointer">📘</div>
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors cursor-pointer">📷</div>
+                        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors cursor-pointer">🐦</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><button onclick="showSection('home')" class="opacity-80 hover:opacity-100 transition-opacity">Home</button></li>
+                        <li><button onclick="showSection('cats')" class="opacity-80 hover:opacity-100 transition-opacity">Meet Our Cats</button></li>
+                        <li><button onclick="showSection('menu')" class="opacity-80 hover:opacity-100 transition-opacity">Menu</button></li>
+                        <li><button onclick="showSection('gallery')" class="opacity-80 hover:opacity-100 transition-opacity">Gallery</button></li>
+                        <li><button onclick="showSection('games')" class="opacity-80 hover:opacity-100 transition-opacity">Games</button></li>
+                        <li><button onclick="showSection('booking')" class="opacity-80 hover:opacity-100 transition-opacity">Book Visit</button></li>
+                        <li><button onclick="showSection('visit')" class="opacity-80 hover:opacity-100 transition-opacity">Visit Info</button></li>
+                        <li><button onclick="showSection('contact')" class="opacity-80 hover:opacity-100 transition-opacity">Contact</button></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Services</h4>
+                    <ul class="space-y-2 text-sm opacity-80">
+                        <li>Cat Adoptions</li>
+                        <li>Coffee & Treats</li>
+                        <li>Private Events</li>
+                        <li>Birthday Parties</li>
+                        <li>Corporate Meetings</li>
+                        <li>Volunteer Programs</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-4">Contact Info</h4>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-start space-x-2">
+                            <span>📍</span>
+                            <div class="opacity-80">
+                                <p>123 Cozy Street</p>
+                                <p>Cat City, CC 12345</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span>📞</span>
+                            <span class="opacity-80">(555) 123-CATS</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span>✉️</span>
+                            <span class="opacity-80">hello@whiskersandcoffee.com</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span>🕒</span>
+                            <span class="opacity-80">Mon-Fri: 7AM-8PM</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/20 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <div class="text-sm opacity-80">
+                        © 2024 Whiskers & Coffee. All rights reserved. Made with ❤️ for cats and coffee lovers.
+                    </div>
+                    <div class="flex space-x-6 text-sm">
+                        <button class="opacity-80 hover:opacity-100 transition-opacity">Privacy Policy</button>
+                        <button class="opacity-80 hover:opacity-100 transition-opacity">Terms of Service</button>
+                        <button class="opacity-80 hover:opacity-100 transition-opacity">Adoption Policy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Cat Modal -->
+    <div id="catModal" class="modal fixed inset-0 bg-black bg-opacity-50 items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modalCatName" class="text-3xl font-bold text-gray-800"></h3>
+                <button onclick="closeCatModal()" class="text-gray-500 hover:text-gray-700 text-3xl transition-colors">
+                    ×
+                </button>
+            </div>
+            <div class="h-64 relative overflow-hidden rounded-xl mb-6">
+                <img id="modalCatImage" src="" alt="" class="w-full h-full object-cover rounded-xl" onerror="this.src=''; this.alt='Cat photo failed to load'; this.style.display='none'; this.parentElement.innerHTML='<div class=\\'h-64 bg-gradient-to-br from-gray-200 to-gray-300 rounded-xl flex items-center justify-center\\'>🐱</div>';">
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <h4 class="font-bold text-lg text-purple-800 mb-2">Basic Info</h4>
+                    <div id="modalBasicInfo" class="space-y-2">
+                        <!-- Basic info will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg text-purple-800 mb-2">Favorite Things</h4>
+                    <ul id="modalLikes" class="space-y-1">
+                        <!-- Likes will be populated by JavaScript -->
+                    </ul>
+                </div>
+            </div>
+            <div class="mb-6">
+                <h4 class="font-bold text-lg text-purple-800 mb-2">Story</h4>
+                <p id="modalStory" class="text-gray-600 leading-relaxed"></p>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="closeCatModal(); showSection('contact');" class="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-3 rounded-xl font-semibold transition-all duration-300">
+                    Inquire About Adoption 💕
+                </button>
+                <button onclick="closeCatModal()" class="px-6 py-3 border-2 border-purple-300 text-purple-600 rounded-xl font-semibold hover:bg-purple-50 transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Modal -->
+    <div id="galleryModal" class="modal fixed inset-0 bg-black bg-opacity-75 items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-4xl w-full p-8 max-h-[90vh] overflow-y-auto fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modalGalleryTitle" class="text-3xl font-bold text-gray-800"></h3>
+                <button onclick="closeGalleryModal()" class="text-gray-500 hover:text-gray-700 text-3xl transition-colors">
+                    ×
+                </button>
+            </div>
+            <div id="modalGalleryContent" class="text-center">
+               
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
