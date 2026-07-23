@@ -37,6 +37,22 @@ Hand-written CSS keyframe animations: fade-in, bounce, float, slide-in (left/rig
 
 ---
 
+## Screenshots
+
+### Home
+
+<img width="1895" height="948" alt="Image1" src="https://github.com/user-attachments/assets/3feda522-b532-414d-be77-7a4dfdc56ab4" />
+
+---
+
+<img width="1878" height="946" alt="image2" src="https://github.com/user-attachments/assets/fcd94671-2462-4504-bacb-8e1980b98b8a" />
+
+---
+
+<img width="1886" height="944" alt="image3" src="https://github.com/user-attachments/assets/a955a542-e06b-42df-baed-318dc3aa6c7e" />
+
+---
+
 ## 🛠️ Tech Stack
 
 | Layer | Technology |
