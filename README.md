@@ -37,6 +37,16 @@ Hand-written CSS keyframe animations: fade-in, bounce, float, slide-in (left/rig
 
 ---
 
+## DEMO
+
+
+
+https://github.com/user-attachments/assets/a3ef666e-7863-4de8-8009-e7ed2464c28d
+
+
+
+---
+
 ## Screenshots
 
 ### Home
